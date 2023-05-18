@@ -1,0 +1,16 @@
+{
+  "name": "booking-form",
+  "version": "1.0.0",
+  "description": "Booking Form for Free Hit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "wp-scripts build",
+    "start": "wp-scripts start"
+  },
+  "author": "Rahul Dhamecha",
+  "license": "ISC",
+  "devDependencies": {
+    "@wordpress/scripts": "^26.4.0"
+  }
+}

@@ -1,0 +1,17 @@
+{
+    "name": "rahuldhamecha/booking-form",
+    "description": "Booking Form For Rahul Dhamecha",
+    "license": "GPL2",
+    "autoload": {
+        "psr-4": {
+            "Rahuldhamecha\\BookingForm\\": "includes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rahul Dhamecha",
+            "email": "rahul21846@gmail.com"
+        }
+    ],
+    "require": {}
+}
