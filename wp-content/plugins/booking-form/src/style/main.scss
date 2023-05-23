@@ -3,6 +3,7 @@ $font-family_1: 'Poppins',sans-serif;
 $background-color_1: #fff;
 $border-color_1: #9b59b6;
 $border-color_2: #d9d9d9;
+$border-color_loader: #9b59b6 transparent #9b59b6 transparent;
 
 * {
   margin: 0;
@@ -24,19 +25,24 @@ body {
   padding: 25px 30px;
   border-radius: 5px;
   box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+
   .title {
-    font-size: 25px;
+    font-size: 30px;
     font-weight: 500;
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
     &::before {
       content: "";
       position: absolute;
-      left: 0;
-      bottom: 0;
+      left: 80px;
       height: 3px;
-      width: 30px;
+      width: 50px;
       border-radius: 5px;
       background: linear-gradient(135deg, #71b7e6, #9b59b6);
+      bottom: 10px;
     }
   }
 }
@@ -201,6 +207,14 @@ form {
     }
   }
 }
+
+@media (min-width: 812px) {
+  .container {
+    width: 700px;
+    min-height: 500px;
+  }
+}
+
 @media (max-width: 584px) {
 .container {
   max-width: 100%;
@@ -238,3 +252,186 @@ form {
   }
 }
 }
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  &:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #9b59b6;
+    border-color: $border-color_loader;
+    animation: lds-dual-ring 1.2s linear infinite;
+  }
+}
+
+.loader_div {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  top: 0;
+  background: #fff;
+  z-index: 9;
+  border-radius: 20px;
+}
+
+div#booking-form {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  max-width: 700px;
+}
+
+.user-details .input-box input[readonly] {
+  border-color: $border-color_1;
+}
+
+.logo_img {
+  width: 100%;
+  max-width: 80px;
+}
+
+.success_messsage {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #9b59b650;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.success_messsage h4 {
+  padding: 0;
+  margin: 0;
+}
+
+.success_messsage span{
+  cursor: pointer;
+}
+
+.add_new_button {
+  background: #9b59b6;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid #9b59b6;
+  cursor: pointer;
+}
+
+.add_new_button:hover {
+  border: 2px solid #9b59b6;
+  background: #fff;
+  color: #9b59b6;
+}
+
+.logo_inner_div {
+  font-size: 30px;
+  font-weight: 500;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+}
+
+@media(max-width: 600px){
+  .logo_inner_div {
+    font-size: 20px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .logo_img {
+    max-width: 60px;
+  }
+
+  .container .title::before {
+    left: 132px;
+    bottom: 50px;
+  }
+
+  .container .title {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .filter_area{
+    margin-top: 15px;
+  }
+}
+
+button.add_new_button.icon {
+  background: #fff;
+  border: 2px solid #9b59b6;
+  margin: 5px 3px;
+  padding: 5px;
+}
+
+button.add_new_button.icon img {
+  width: 20px;
+  pointer-events: none;
+}
+
+.expanded_detail {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.expanded_detail table {
+  width: 100%;
+  margin:10px;
+}
+
+.expanded_detail table tr td,.expanded_detail table tr th {
+  border: 1px solid #9b59b6;
+  padding:5px;
+  text-align: left;
+}
+
+.filter_area{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.filter_area .input-box{
+  max-width: 200px;
+}
+
+.add_new_button.act{
+  margin: 0 5px;
+}
+
+.booking_buttons {
+  width: 100%;
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.booking_buttons button {padding: 20px;font-size: 20px;}

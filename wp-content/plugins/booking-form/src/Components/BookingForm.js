@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-
-const BookingForm = () => {
+import axios from 'axios';
+import logo from '../assets/free_hit_logo.png';
+const BookingForm = ({setShowForm,showForm,isEdit,editData}) => {
     const [boxName,setBoxName] = useState('');
     const [shift,setShift] = useState('');
     const [personName,setPersonName] = useState('');
@@ -12,6 +13,11 @@ const BookingForm = () => {
     const [remainAmount,setRemainAmount] = useState('');
     const [bookingBy,setBookingBy] = useState('');
     const [dateTime,setDateTime] = useState('');
+    const [loading,setLoading] = useState(false);
+    const [showSuccess,setShowSuccess] = useState(false);
+    const [successMessage,setSuccessMessage] = useState('');
+    const [bookingId,setBookingId] = useState(0);
+    const [isEditDataSet,setIsEditDataSet] = useState(false);
 
     const [errBoxName,setErrBoxName] = useState(false);
     const [errShift,setErrShift] = useState(false);
@@ -22,6 +28,32 @@ const BookingForm = () => {
     const [errAdvanceAmount,setErrAdvanceAmount] = useState(false);
     const [errBookingBy,setErrBookingBy] = useState(false);
     const [errDateTime,setErrDateTime] = useState(false);
+
+    const bookingFillEditData = () => {
+        if(isEdit){
+            setBoxName(editData.box_name);
+            setShift(editData.shift);
+            setPersonName(editData.person_name);
+            setPhoneNumber(editData.person_number);
+            setHours(editData.hours);
+            setHourlyRate(editData.hourly_rate);
+            setTotalAmount(editData.total_amount);
+            setAdvanceAmount(editData.advanced_amount);
+            setRemainAmount(editData.remain_amount);
+            setBookingBy(editData.booking_by);
+            setDateTime(editData.date_time);
+            setBookingId(editData.id);
+        }else{
+            resetForm();
+        }
+    };
+
+    useEffect(() => {
+        if(!isEditDataSet){
+            bookingFillEditData();
+            setIsEditDataSet(true);
+        }
+    },isEditDataSet);
 
     const boxList = [
         {
@@ -83,8 +115,24 @@ const BookingForm = () => {
         }
     }
 
+    const resetForm = () => {
+        setBoxName('');
+        setShift('');
+        setPersonName('');
+        setPhoneNumber('');
+        setHours('');
+        setHourlyRate('');
+        setTotalAmount(0);
+        setAdvanceAmount('');
+        setRemainAmount('');
+        setBookingBy('');
+        setDateTime('');
+        setBookingId(0);
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        const { storeURL } = booking_form;
         const field1 = checkTextValidation(personName,setErrPersonName)
         const field2 = checkTextValidation(phoneNumber,setErrPhoneNumber)
         const field3 = checkTextValidation(boxName,setErrBoxName)
@@ -97,12 +145,63 @@ const BookingForm = () => {
         if(field1 || field2 || field3 || field4 || field5 || field6 || field7 || field8 || field9) {
             return false;
         }
-        alert('rock');
+
+        let data = {
+            boxName: boxName,
+            shift: shift,
+            personName: personName,
+            phoneNumber: phoneNumber,
+            hours: hours,
+            hourlyRate: hourlyRate,
+            totalAmount: totalAmount,
+            advanceAmount: advanceAmount,
+            remainAmount: remainAmount,
+            bookingBy: bookingBy,
+            dateTime: dateTime,
+            booking_id: bookingId
+        }
+
+        setLoading(true);
+        axios.post(storeURL, data)
+            .then(response => {
+                setSuccessMessage(response.data.response);
+                setLoading(false);
+                setShowSuccess(true);
+                resetForm();
+                setShowForm(!showForm);
+            })
+            .catch(error => {
+                console.log('Error Message : ',error.message);
+                console.error('There was an error!', error);
+            });
+    }
+
+    const closeSuccessMessage = () => {
+        setSuccessMessage('');
+        setShowSuccess(false);
     }
 
     return (
         <div className="container">
-            <div className="title">Booking</div>
+            { loading && (
+                <div className="loader_div">
+                    <div className="lds-dual-ring"></div>
+                </div>
+            )
+            }
+            <div className="title">
+                <div className="logo_inner_div">
+                    <img className="logo_img" src={logo} alt="Logo"/> Free Hit Booking
+                </div>
+                <button className="add_new_button" onClick={() => setShowForm(!showForm)}>Back</button>
+            </div>
+            {showSuccess && (
+                <div className="success_messsage">
+                    <h4>{successMessage}</h4>
+                    <span onClick={() => closeSuccessMessage()}>✖</span>
+                </div>
+            )
+            }
             <div className="content">
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <div className="user-details">
