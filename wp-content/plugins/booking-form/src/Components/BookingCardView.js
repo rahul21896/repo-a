@@ -5,12 +5,11 @@ import delete_logo from '../assets/delete.png';
 import edit_logo from '../assets/pencil.png';
 import CardItem from "./CardItem";
 
-const BookingList = ({setIsEdit,setEditData,setShowForm,showForm,filterDate,gridView}) => {
+const BookingCardView = ({setIsEdit,setEditData,setShowForm,showForm,filterDate}) => {
 
     const [data,setData] = useState([]);
     const [loadData,setLoadData] = useState(true);
     const [loading,setLoading] = useState(false);
-
     const ExpandedComponent = ({ data }) => {
         return (
             <div className="expanded_detail">
@@ -111,10 +110,10 @@ const BookingList = ({setIsEdit,setEditData,setShowForm,showForm,filterDate,grid
                 setIsEdit(true);
                 setShowForm(!showForm);
             })
-        .catch(error => {
-            console.log('Error Message : ',error.message);
-            console.error('There was an error!', error);
-        });
+            .catch(error => {
+                console.log('Error Message : ',error.message);
+                console.error('There was an error!', error);
+            });
     }
 
     const columns = [
@@ -196,21 +195,11 @@ const BookingList = ({setIsEdit,setEditData,setShowForm,showForm,filterDate,grid
                 </div>
             )
             }
-            {!gridView && <DataTable
-                columns={columns}
-                data={data}
-                expandableRows
-                expandableRowsComponent={ExpandedComponent}
-                pagination
-            />}
-            {gridView && (
-                <div className="card">
-                    <CardItem cardData={data} />
-                </div>
-            )
-            }
+            <div className="card">
+                <CardItem cardData={data} />
+            </div>
         </>
     )
 }
 
-export default BookingList;
+export default BookingCardView;

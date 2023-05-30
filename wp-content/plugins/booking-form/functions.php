@@ -41,11 +41,15 @@ function booking_form_enqueue_scripts() {
     $booking_form_store_url = get_rest_url(null,'booking-form/v1/store');
     $booking_form_list_url = get_rest_url(null,'booking-form/v1/list');
     $booking_form_delete_url = get_rest_url(null,'booking-form/v1/delete');
+    $booking_form_months_url = get_rest_url(null,'booking-form/v1/months');
+    $booking_form_dates_url = get_rest_url(null,'booking-form/v1/dates');
 
     wp_localize_script('booking-form-script','booking_form',array(
         'storeURL' => $booking_form_store_url,
         'listURL' => $booking_form_list_url,
         'deleteURL' => $booking_form_delete_url,
+        'monthURL' => $booking_form_months_url,
+        'dateURL' => $booking_form_dates_url,
         'nonce' => wp_create_nonce('wp_rest')
     ));
 
@@ -206,9 +210,17 @@ function booking_form_months_list(WP_REST_Request $request){
     $results = $wpdb->get_results($query);
 
     $final_results = array();
+    $test_results = array();
+
     foreach ($results as $item) {
-        $final_results[$item->year][] = $item->month;
-        $final_results[$item->year] = array_unique($final_results[$item->year]);
+        $test_results[$item->year][] = $item->month;
+        $test_results[$item->year] = array_unique($test_results[$item->year]);
+    }
+
+    foreach ($test_results as $year => $item) {
+        foreach ($item as  $i) {
+            $final_results[] = ['month_string' => $i, 'month_num' => date('m', strtotime($i)),'year' => $year];
+        }
     }
 
     return new WP_REST_Response(
@@ -238,7 +250,7 @@ function booking_form_dates_list(WP_REST_Request $request){
         $month_query = "WHERE $month_year_query";
     }
 
-    $query = "SELECT DATE_FORMAT(date_time, '%d-%m-%Y') as date FROM $table_name $month_query ORDER BY date_time DESC";
+    $query = "SELECT DISTINCT(DATE_FORMAT(date_time, '%d-%m-%Y')) as date FROM $table_name $month_query ORDER BY date_time DESC";
 
     $results = $wpdb->get_results($query);
 
